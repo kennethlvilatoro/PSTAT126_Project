@@ -1,0 +1,103 @@
+---
+title: "Project Pstat 126 Step 3"
+author: "Kenny"
+output: html_document
+date: "2023-06-01"
+---
+
+```{r setup, include=FALSE}
+# default code chunk options
+knitr::opts_chunk$set(echo = T,
+                      results = 'markup',
+                      message = F, 
+                      warning = F,
+                      fig.width = 4,
+                      fig.height = 3,
+                      fig.align = 'center') 
+
+# load packages
+library(faraway)
+library(tidyverse)
+library(tidymodels)
+library(modelr)
+library(ggplot2)
+```
+
+# Introduction (briefly refresh the reader’s mind as to the variables of interest). Remember that you should include a reference for the original data source, and the reader should know to what population you are inferring your results.
+
+Before running the analysis, create a pairs plot on the explanatory and response variables (try ggpairs()). Comment on any interesting relationships you see. Are any of the explanatory variables highly correlated? Is there any reason to fit a quadratic term? Or do a log transformation? You may or may not include the pairs plot, but you should report on any relationships between the explanatory variables.
+
+```{r}
+
+```
+
+• Explain any feature engineering you do.
+
+```{r}
+
+```
+
+
+• Comment on whether or not you are using interaction variables. (Yes, interactions can be applied to non-factor variables, it’s just that they are slightly more diﬀicult to interpret.) If you think interaction variables are necessary, comment on why the slope of the equation would change based on the level of one of the other variables.
+
+```{r}
+
+```
+
+
+• Computational model: Choose at least 2 models you think are interesting (maybe use
+your domain expertise!). Use cross validation to choose which one is better. Don’t be
+afraid to include quadratic, log, or interaction terms as you see fit.
+
+```{r}
+```
+
+Statistical model: Use a statistical method to select variables to use in the model (e.g., manual, stepwise, forward, or backward selection procedures to create the best model for your data.) Explain your method and report which criterion(a) you used. Use residual plots, significance tests, and (some) criteria (𝐹 , 𝑅𝑎𝑑𝑗, 𝑅2) to justify your model. (Your final model may have a large number of explanatory variables or just a few... pick the model you think is best!) Don’t be afraid to include quadratic, log, or interaction terms as you see fit.
+
+```{r}
+
+```
+
+
+• After choosing a single model...
+
+• Interpret your 𝛽 coeﬀicients to the best of your ability. Are your coeﬀicients significant? You can perform a test of significance 𝐻0 ∶ 𝛽𝑖 ≥ 0 or 𝐻0 ∶ 𝛽𝑖 ≥ 𝑐 if you think there is a reason that the slope would increase by a certain factor greater than 0 (or that the intercept would increase by a certain factor if the variable of interest is an indicator variable.)
+
+
+
+• Report the 𝑅2 and adjusted-𝑅2 values on the test data. Comment on the fit of the
+model as determined by how much variability is explained. Is a high 𝑅2 necessarily a
+guanrantee that the model will accurately describe the population? Why or why not?
+
+```{r}
+
+```
+
+
+• A complete analysis of the residuals and influence points. Use plots to get an idea of which points may be contributing to the fit. Consider re-fitting a model with and without certain data that have both high leverage and large residuals. Do not include every plot, but consider including plots that give the reader an idea of your analysis. (Note: the residual analysis may have come before modeling, or it may come after modeling, or maybe both! Maybe on training data, maybe on test data... )
+
+```{r}
+
+```
+
+
+• Try to give an interpretation of the model that makes sense. Why do you think some
+variables stayed significant and others dropped out? Are any of your variables highly correlated (could one have taken the place of another?)
+
+```{r}
+
+```
+
+
+• Give CIs for a mean predicted value and the PIs of a future predicted value for at least one combination of 𝑋’s (from your final linear model).
+
+```{r}
+
+```
+
+
+• Summarize your report (for the final deliverable).
+
+```{r}
+```
+
