@@ -1,0 +1,196 @@
+---
+title: "Project Pstat 126 Step 4"
+author: "Kenny"
+output: html_document
+date: "2023-06-01"
+---
+```{r setup, include = FALSE}
+# default code chunk options
+knitr::opts_chunk$set(echo = T,
+                      results = 'markup',
+                      message = F, 
+                      warning = F,
+                      fig.width = 4,
+                      fig.height = 3,
+                      fig.align = 'center') 
+
+# load packages
+library(faraway)
+library(tidyverse)
+library(tidymodels)
+library(modelr)
+library(ggplot2)
+library(glmnet)
+```
+
+
+Introduction: (Quickly reacquaint the reader with the relevant variables). Ensure to
+include a citation for the original data source, and clarify the population to which your
+results are being inferred.
+```{r}
+
+income_data <- read.csv("~/downloads/PSTAT126_Project-main/adult-copy.csv")
+head(income_data)
+
+#The variables that are relevant to the 
+
+```
+
+
+• Execute both ridge regression (RR) and LASSO on the complete variable set (use cross-
+validation to find lambda). Analyze and differentiate the models (i.e., coeﬀicients) with
+the final MLR model from the previous project task.
+```{r}
+
+#Ridge Regression for variables 
+
+#response variable
+y <- income_data$educational.num
+
+#define the matrix of the predictor variables
+x <- data.matrix(income_data[, c('age', 'fnlwgt', 'hours.per.week')])
+
+#fit Ridge Regression Model
+model <- glmnet(x, y, alpha = 0)
+
+#summary of the model
+summary(model)
+
+#performing k-fold cross_validation in order to find optimal lambda value
+cv_model <- cv.glmnet(x, y, alpha = 0)
+
+#find optimal lambda value that minimizes test MSE
+best_lambda <- cv_model$lambda.min
+best_lambda
+
+#produce plot of test MSE by lambda value
+plot(cv_model)
+
+#find coefficients of best model
+best_model <- glmnet(x, y, alpha = 0, lamba = best_lambda)
+coef(best_model)
+
+#ridge trace plot 
+plot(model, xvar = "lambda")
+
+#using best fitted model to make predictions
+
+y_predicted <- predict(model, s = best_lambda, newx = x)
+
+#calculating R^2 and SST and SSE
+sst <- sum((y - mean(y))^2)
+sse <- sum((y_predicted - y)^2)
+
+r_2 <- 1 - sse/sst
+r_2
+
+
+```
+
+
+```{r}
+#LASSO Regression
+
+#response variable
+y <- income_data$educational.num
+
+#define the matrix of the predictor variables
+x <- data.matrix(income_data[, c('age', 'fnlwgt', 'hours.per.week')])
+
+# perform k-fold cross validation to find optimal lambda value
+cv_model2 <- cv.glmnet(x, y, alpha = 1)
+
+#find optimal lambda value that minimizes test MSE
+best_lambda2 <- cv_model2$lambda.min
+best_lambda2
+
+#producing plot of test MSE by lambda value
+plot(cv_model2)
+
+#Analyzing final model
+#finding coefficients of best model
+
+best_model2 <- glmnet(x, y, alpha = 1, lambda = best_lambda2)
+coef(best_model2)
+
+
+#using best fitted model to make predictions
+
+y_predicted2 <- predict(model, s = best_lambda2, newx = x)
+
+
+#calculating R^2 and SST and SSE
+sst <- sum((y - mean(y))^2)
+sse <- sum((y_predicted2 - y)^2)
+
+r_2 <- 1 - sse/sst
+r_2
+
+#not too sure why the r squares are so low but maybe the formulas are wrong for the r squared 
+
+```
+
+
+
+• Construct a single graph with the observed response variable on the x-axis and the
+predicted response variable on the y-axis. Superimpose (using color with a legend) 3
+different predictions: MLR, RR, LASSO. Provide a commentary on the figure.
+```{r}
+
+#need Step 3 MLR model in order to do this part.
+
+```
+
+
+
+• Conclusion (Sum up your results. Discuss any notable happenings. Were the data largely
+as you anticipated or were there surprising results? What further queries would you like
+to explore about the data?)
+
+```{r}
+#will do all together
+
+
+```
+
+
+Innovation:
+• Execute at least one analysis technique that hasn’t been covered in class.
+
+```{r}
+
+
+
+```
+
+
+• Justify your choice of method(s). That is, why is it suitable for your data? Explain the
+importance of this method in comprehending your data’s complete analysis.
+
+```{r}
+
+
+
+```
+
+• Provide some context/theory to the method (demonstrate your comprehension of the new
+method). This is essential! For instance, describe the derivation and intuition behind
+a new test statistic. Share as much detail as possible about your understanding of the
+new concept.
+
+```{r}
+
+
+
+```
+
+
+• What technical conditions are vital for the model? How do the results react to these
+conditions? Were any of these violated?
+
+```{r}
+
+
+
+```
+
