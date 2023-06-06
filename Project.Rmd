@@ -3,8 +3,8 @@ title: "PSTAT 126 Project"
 author: Jeff Shen
 date: "2023-04-27"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include = FALSE}
@@ -48,7 +48,7 @@ We can test these hypotheses using a linear regression model and examining the p
 
 ## Checking the Assumptions for Linear Regression
 ```{r}
-income_data <- read.csv("~/Desktop/adult.csv")
+income_data <- read.csv("~/downloads/PSTAT126_Project-main/adult-copy.csv")
 head(income_data)
 ```
 ```{r assumption_plots, fig.show = 'show', echo=FALSE}
@@ -110,3 +110,70 @@ ggplot(income_summary, aes(x = education_num, y = prop_over_50k)) +
 beta_1 <- coef(lm_fit)[2]
 cat("beta_1 coefficient: ", beta_1, "\n")
 ```
+
+
+```{r}
+#Compute the test of 𝛽1 (or other test from above) or find a CI for 𝛽1. Remember that if you have transformed data, you should be careful about your interpretations. Your test or CI should include an interpretation in the words of your variable
+
+#confidence interval for education num
+l.model <- lm(education_num ~ 1, income_data)
+confint(l.model, level = 0.95)
+
+
+```
+
+
+Plot your (transformed?) variables, try to think of one as explanatory and the other as response. Give the reader a CI for both the mean and individual response at some interesting value of the explanatory variable. (That is, at some x-value that is interesting to you.) Interpret these intervals.
+
+```{r}
+#plot of transformed variable for income data with income variable
+p <- ggplot(income_data, aes(x = education_num, y =  prop_over_50k)) + geom_point() + labs(x = 'Education Level', y = 'Income')
+
+p
+
+#Confidence Interval for the mean and individual response of income
+
+
+
+```
+
+
+
+```{r}
+#Assess the fit of your model. Discuss the 𝑅2 value and the residual plot(s). Remember that residual plots (not 𝑅2) determine whether a linear model is appropriate
+
+#calculating R^2 
+
+l.model2 <- lm(income_trans ~ education_num, income_data)
+
+rsquare(l.model2, income_data)
+
+#plotting the residuals
+
+#calculating residuals 
+res <- resid(l.model2)
+
+#plot of fitted vs residual plots
+plot(fitted(l.model2), res)
+
+#adding line to the model 
+abline(0,0)
+
+#qq plot for residuals 
+qqnorm(res)
+
+#adding line to the plot of residuals 
+qqline(res)
+
+#density plot of residuals 
+plot(density(res))
+
+
+```
+
+
+
+
+
+
+
