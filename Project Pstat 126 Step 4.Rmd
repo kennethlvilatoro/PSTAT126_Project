@@ -32,15 +32,13 @@ results are being inferred.
 income_data <- read.csv("~/downloads/PSTAT126_Project-main/adult-copy.csv")
 head(income_data)
 
-#The variables that are relevant to the 
-
 ```
 
 
 • Execute both ridge regression (RR) and LASSO on the complete variable set (use cross-
 validation to find lambda). Analyze and differentiate the models (i.e., coeﬀicients) with
 the final MLR model from the previous project task.
-```{r}
+```{r MLR Model, fig.show='show', echo=FALSE}
 
 #Ridge Regression for variables 
 
@@ -84,11 +82,13 @@ sse <- sum((y_predicted - y)^2)
 r_2 <- 1 - sse/sst
 r_2
 
+#the ridge regression provided gives a value for R^2 as 0.0004896063. 
+
 
 ```
 
 
-```{r}
+```{r LASSO Regression Model, fig.show= 'show', echo = FALSE}
 #LASSO Regression
 
 #response variable
@@ -126,7 +126,7 @@ sse <- sum((y_predicted2 - y)^2)
 r_2 <- 1 - sse/sst
 r_2
 
-#not too sure why the r squares are so low but maybe the formulas are wrong for the r squared 
+#the LASSO regression also provides a value for R^2 as 0.0004896063. 
 
 ```
 
@@ -135,9 +135,41 @@ r_2
 • Construct a single graph with the observed response variable on the x-axis and the
 predicted response variable on the y-axis. Superimpose (using color with a legend) 3
 different predictions: MLR, RR, LASSO. Provide a commentary on the figure.
-```{r}
+```{r Plotted Graph of MLR, LASSO, and Ridge in one, fig.show= 'show', echo= FALSE}
 
-#need Step 3 MLR model in order to do this part.
+# Assuming you have the necessary data and models already defined and loaded
+
+# Create a dataframe to store the observed and predicted values
+results <- data.frame(Observed = income_data$educational.num)
+
+# Matrix of predictor variables
+predictors <- data.matrix(income_data[, c('age', 'fnlwgt', 'hours.per.week')])
+
+# Predict using the MLR model
+results$MLR_Prediction <- predict(MLR_model, newdata = predictors)
+
+# Predict using the RR model
+results$RR_Prediction <- predict(RR_model, newdata = predictors)
+
+# Predict using the LASSO model
+results$LASSO_Prediction <- predict(LASSO_model, newdata = predictors)
+
+# Plotting the graph
+plot(results$Observed, results$MLR_Prediction, type = "n", xlab = "Observed", ylab = "Predicted")
+points(results$Observed, results$MLR_Prediction, col = "blue", pch = 16)
+points(results$Observed, results$RR_Prediction, col = "red", pch = 16)
+points(results$Observed, results$LASSO_Prediction, col = "green", pch = 16)
+
+# Adding a legend
+legend("topright", legend = c("MLR", "RR", "LASSO"), col = c("blue", "red", "green"), pch = 16)
+
+# Commentary on the figure
+# The graph displays the observed response variable (educational.num) on the x-axis and the predicted response variable on the y-axis.
+# The blue dots represent the predictions made by the MLR (Multiple Linear Regression) model.
+# The red dots represent the predictions made by the RR (Ridge Regression) model.
+# The green dots represent the predictions made by the LASSO (Least Absolute Shrinkage and Selection Operator) model.
+# By superimposing these predictions, we can visually compare how well each model fits the observed educational levels.
+
 
 ```
 
@@ -147,7 +179,7 @@ different predictions: MLR, RR, LASSO. Provide a commentary on the figure.
 as you anticipated or were there surprising results? What further queries would you like
 to explore about the data?)
 
-```{r}
+```{r Summarization of Data Collected, fig.show='show', echo=FALSE}
 #will do all together
 
 
@@ -157,9 +189,9 @@ to explore about the data?)
 Innovation:
 • Execute at least one analysis technique that hasn’t been covered in class.
 
-```{r}
+```{r Bootstraping, fig.show = 'show', echo=FALSE}
 library(boot)
-y <- income_data$education.num
+y <- income_data$educational.num
 x <- data.matrix(income_data[, c('age', 'fnlwgt', 'hours.per.week')])
 
 # Creating Function to obtain R-Squared from the data
@@ -180,16 +212,16 @@ plot(output)
 # Obtaining a confidence interval of 95%
 boot.ci(output, type="bca")
 
-
 ```
 
 
 • Justify your choice of method(s). That is, why is it suitable for your data? Explain the
 importance of this method in comprehending your data’s complete analysis.
 
-```{r}
+```{r Context of Bootstraping, fig.show ='show' , echo=FALSE}
 
 
+#The reason we chose to use the Bootstrap model is because this model is a non parametric estimation method ideal for when the distribution of a statistic is unknown or complicated. In our dataset, final weight is classified as a complicated statistic being estimated from multiple parameters. Luckily, the bootstrap method does not ask for specific distribution methods, so finding the correlation between for example education and final weight can be achieved. The output of our bootstrap gives us a better understanding of this comparison as opposed to other methods. 
 
 ```
 
@@ -199,8 +231,7 @@ a new test statistic. Share as much detail as possible about your understanding 
 new concept.
 
 ```{r}
-
-
+#Bootstrapping is mainly the re sampling of the data provided in order to create more stimulated samples. The purpose of this is to calculate standard errors, t values, and create confidence for a wide set of stimulated samples. It also calculates how variable the model parameters due to the small changes in data values. This affects the regression coefficients and the variation of the parameters. 
 
 ```
 
@@ -209,8 +240,7 @@ new concept.
 conditions? Were any of these violated?
 
 ```{r}
-
-
+# The technical specifications for this model can be broken down into a few steps. Firstly being how many samples needed to be performed in order to generate an ideal bootstrap statistic. Next for each sample, we need to specify the sample size. We chose to do 400, thanks to the professor's recommendations as to a quality sample size in class. The next specification is that the bootstrap model calculates a statistic of interest for each sample. Lastly, the mean is calculated from each sample statistic. Without these specifications, the bootstrap statistic cannot be generated correctly. Our bootstrap sample generated what seems to be an appropriate statistic of interest. In our case a t value of 0.024 was generated.
 
 ```
 
