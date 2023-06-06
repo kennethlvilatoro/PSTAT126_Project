@@ -158,7 +158,27 @@ Innovation:
 • Execute at least one analysis technique that hasn’t been covered in class.
 
 ```{r}
+library(boot)
+y <- income_data$education.num
+x <- data.matrix(income_data[, c('age', 'fnlwgt', 'hours.per.week')])
 
+# Creating Function to obtain R-Squared from the data
+r_squared <- function(formula, data, indices) {
+val <- data[indices,] # selecting sample with boot 
+fit <- lm(formula, data=val)
+return(summary(fit)$r.square)
+} 
+
+# Performing 500 replications with boot 
+output <- boot(data=income_data, statistic=r_squared, 
+R=100, formula= y ~ x)
+
+# Plotting the output
+output 
+plot(output)
+
+# Obtaining a confidence interval of 95%
+boot.ci(output, type="bca")
 
 
 ```
